@@ -1,0 +1,11 @@
+# Step 1 - Create root Workspace
+ng new --style scss --strict --skip-git --routing --prefix ng --package-manager yarn --create-application false
+
+# Step 2 - Create application
+ng g application <app-name> --style scss --skip-tests --routing --prefix ng --strict
+
+# Step 3 - Add @angular/elements
+ng add @angular/elements
+
+# Step 4 - Add @angular-architects/module-federation
+ng add @angular-architects/module-federation
