@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-
 export interface MicroFrontend {
   name: string;
   pathName: string;
@@ -23,7 +22,7 @@ export type MicroFrontends = MicroFrontend[];
 })
 export class AppService {
 
-  public microfrontends!: MicroFrontends[];
+  public microfrontends!: MicroFrontends;
 
   constructor(private router: Router, private readonly http: HttpClient) { }
 
@@ -34,6 +33,7 @@ export class AppService {
         .pipe(take(1))
         .subscribe({
           next: (response) => {
+            this.microfrontends = response;
             const ROUTE_CONFIG = this.router.config;
             const NEW_ROUTES: Routes = response.map((micro) => {
               const forRootConfig = {

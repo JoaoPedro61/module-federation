@@ -21,6 +21,14 @@ export const DATA: { [x: string]: MicroFrontends } = {
       ngModule: 'AuthModule',
       applicationType: 'angular',
     },
+    {
+      name: 'portalSeguros',
+      pathName: 'portalSeguros',
+      urlEntry: 'http://localhost:4002/remoteEntry.js',
+      exposedModule: './Module',
+      ngModule: 'SchematicRenderModule',
+      applicationType: 'angular',
+    },
   ],
   auth: [],
 };
