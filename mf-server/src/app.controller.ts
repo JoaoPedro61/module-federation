@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { AppService, MicroFrontends } from './app.service';
 
@@ -11,8 +11,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('/available')
-  getAvailableMicroFrontends(): MicroFrontends {
-    return this.appService.getAvailableMicroFrontends();
+  @Get('/available/:applicationName')
+  getAvailableMicroFrontends(
+    @Param('applicationName') applicationName: string,
+  ): MicroFrontends {
+    return this.appService.getAvailableMicroFrontends(applicationName);
   }
 }

@@ -10,21 +10,26 @@ export interface MicroFrontend {
 
 export type MicroFrontends = MicroFrontend[];
 
+export const DATA: { [x: string]: MicroFrontends } = {
+  shell: [
+    {
+      name: 'auth',
+      pathName: 'auth',
+      urlEntry: 'http://localhost:4201/remoteEntry.js',
+      exposedModule: 'AuthModule',
+      applicationType: 'angular',
+    },
+  ],
+  auth: [],
+};
+
 @Injectable()
 export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
 
-  public getAvailableMicroFrontends(): MicroFrontends {
-    return [
-      {
-        name: 'auth',
-        pathName: 'auth',
-        urlEntry: 'http://localhost:4201/remoteEntry.js',
-        exposedModule: 'AuthModule',
-        applicationType: 'angular',
-      },
-    ];
+  public getAvailableMicroFrontends(applicationName = 'shell'): MicroFrontends {
+    return DATA[applicationName] || [];
   }
 }

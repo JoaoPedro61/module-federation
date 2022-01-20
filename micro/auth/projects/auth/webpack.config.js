@@ -4,9 +4,8 @@ const path = require("path");
 const share = mf.share;
 
 const sharedMappings = new mf.SharedMappings();
-sharedMappings.register(
-  path.join(__dirname, '../../tsconfig.json'),
-  [/* mapped paths to share */]);
+sharedMappings.register(path.join(__dirname, '../../tsconfig.json'), [
+]);
 
 module.exports = {
   output: {
@@ -28,17 +27,15 @@ module.exports = {
   plugins: [
     new ModuleFederationPlugin({
       name: "auth",
-      library: { type: 'var', name: 'auth' },
       filename: "remoteEntry.js",
       exposes: {
-        AuthModule: './projects/auth/src/app/app.module.ts',
+        'AuthModule': './projects/auth/src/app/auth/auth.module.ts',
       },
 
       shared: share({
-        "@angular/core": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        "@angular/common": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        "@angular/common/http": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        "@angular/router": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
+        '@angular/core': { eager: true, singleton: true },
+        '@angular/common': { eager: true, singleton: true },
+        '@angular/router': { eager: true, singleton: true },
 
         ...sharedMappings.getDescriptors()
       })
@@ -47,3 +44,32 @@ module.exports = {
     sharedMappings.getPlugin()
   ],
 };
+
+/* 
+module.exports = {
+  output: {
+    publicPath: 'http://localhost:4201/',
+    uniqueName: 'auth',
+  },
+  optimization: {
+    runtimeChunk: false,
+  },
+  plugins: [
+    new ModuleFederationPlugin({
+      library: { type: 'var', name: 'auth' },
+      name: "auth",
+      filename: "remoteEntry.js",
+      exposes: {
+        'AuthModule': './projects/auth/src/app/auth/auth.module.ts',
+      },
+
+      shared: {
+        '@angular/core': { eager: true, singleton: true },
+        '@angular/common': { eager: true, singleton: true },
+        '@angular/router': { eager: true, singleton: true },
+      },
+
+    }),
+  ],
+};
+ */

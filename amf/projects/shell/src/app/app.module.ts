@@ -1,59 +1,42 @@
-import { loadRemoteModule } from '@angular-architects/module-federation';
-import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, ApplicationRef, DoBootstrap, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Router, RouterModule, Routes } from '@angular/router';
-import { take } from 'rxjs/operators';
-
-import ROUTES from './routes';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
-
-
+import { AppService, initializeApp } from './app.service';
+import ROUTES from './routes';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
-    RouterModule.forRoot(ROUTES),
-    RouterModule,
+    RouterModule.forRoot(ROUTES, { relativeLinkResolution: 'legacy' }),
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    AppService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      multi: true,
+      deps: [AppService],
+    },
+  ],
   bootstrap: [
-    AppComponent
+    AppComponent,
   ]
 })
-export class AppModule {
+export class AppModule implements DoBootstrap {
 
-  constructor(
-    private readonly router: Router,
-    private readonly http: HttpClient
-  ) {
-    this.http
-      .get<any[]>('http://localhost:3000/available')
-      .pipe(take(1))
+  public ngDoBootstrap(appRef: ApplicationRef): void {
+    appRef
+      .isStable
       .subscribe({
-        next: (response) => {
-          const NEW_ROUTES: Routes = response.map((micro) => {
-            const forRootConfig = {
-              ...micro,
-              envelopedByShell: true,
-            };
-
-            return {
-              path: micro.pathName,
-              loadChildren: () => loadRemoteModule({
-                remoteEntry: micro.urlEntry,
-                remoteName: micro.name,
-                exposedModule: micro.exposedModule,
-              }).then(m => typeof m[micro.exposedModule].forRoot === 'function' ? m[micro.exposedModule].forRoot(forRootConfig) : m[micro.exposedModule])
-            };
-          });
-          const MERGED_ROUTES = [...ROUTES, ...NEW_ROUTES];
-          this.router.resetConfig(MERGED_ROUTES);
+        next: (isStable) => {
+          console.log(`Application is ${!isStable ? 'un' : ''}stable`)
         },
       });
   }
