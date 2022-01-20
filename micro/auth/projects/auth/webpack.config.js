@@ -11,7 +11,8 @@ sharedMappings.register(
 module.exports = {
   output: {
     uniqueName: "auth",
-    publicPath: "http://localhost:4201/"
+    publicPath: "http://localhost:4201/",
+    scriptType: 'text/javascript',
   },
   optimization: {
     runtimeChunk: false
@@ -26,20 +27,12 @@ module.exports = {
   },
   plugins: [
     new ModuleFederationPlugin({
-      library: { type: "module" },
-
-      // For remotes (please adjust)
-      // name: "auth",
-      // filename: "remoteEntry.js",
-      // exposes: {
-      //     './Component': './projects/auth/src/app/app.component.ts',
-      // },        
-
-      // For hosts (please adjust)
-      // remotes: {
-      //     "mfe1": "http://localhost:3000/remoteEntry.js",
-
-      // },
+      name: "auth",
+      library: { type: 'var', name: 'auth' },
+      filename: "remoteEntry.js",
+      exposes: {
+        AuthModule: './projects/auth/src/app/app.module.ts',
+      },
 
       shared: share({
         "@angular/core": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
