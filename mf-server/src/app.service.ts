@@ -6,6 +6,7 @@ export interface MicroFrontend {
   urlEntry: string;
   exposedModule: string;
   applicationType: string;
+  ngModule: string;
 }
 
 export type MicroFrontends = MicroFrontend[];
@@ -15,8 +16,9 @@ export const DATA: { [x: string]: MicroFrontends } = {
     {
       name: 'auth',
       pathName: 'auth',
-      urlEntry: 'http://localhost:4201/remoteEntry.js',
-      exposedModule: 'AuthModule',
+      urlEntry: 'http://localhost:4001/remoteEntry.js',
+      exposedModule: './Module',
+      ngModule: 'AuthModule',
       applicationType: 'angular',
     },
   ],

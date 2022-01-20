@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 
+
+/**
+ * This component is a simple anchor render to the AuthModule
+ *
+ * @export
+ * @class AppComponent
+ */
 @Component({
   selector: 'ng-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  template: '<router-outlet></router-outlet>',
 })
-export class AppComponent {
-  title = 'auth';
-}
+export class AppComponent { }

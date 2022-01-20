@@ -1,18 +1,32 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+
+/**
+ * This module is a simple wrapper for the AuthModule
+ *
+ * @export
+ * @class AppModule
+ */
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    RouterModule.forRoot([
+      {
+        path: '',
+        loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
+      }
+    ]),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent,
+  ],
 })
 export class AppModule { }
