@@ -5,6 +5,7 @@ export interface MicroFrontend {
   pathName: string;
   urlEntry: string;
   exposedModule: string;
+  applicationType: string;
 }
 
 export type MicroFrontends = MicroFrontend[];
@@ -22,6 +23,7 @@ export class AppService {
         pathName: 'auth',
         urlEntry: 'http://localhost:4201/remoteEntry.js',
         exposedModule: 'AuthModule',
+        applicationType: 'angular',
       },
     ];
   }
