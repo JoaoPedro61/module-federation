@@ -25,6 +25,9 @@
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
+  "resolutions": {
+    "webpack": "^5.0.0"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.1.4",
     "@angular/cli": "~13.1.4",
