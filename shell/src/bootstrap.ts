@@ -8,5 +8,18 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+
+declare const require: any;
+
+const ngVersion = require('../package.json').dependencies['@angular/core'];
+
+(window as any).platform = (window as any).platform || {};
+let platform = (window as any).platform[ngVersion];
+
+if (!platform) {
+  platform = platformBrowserDynamic();
+  (window as any).platform[ngVersion] = platform;
+}
+
+platform.bootstrapModule(AppModule)
+  .catch((err: Error) => console.error(err));

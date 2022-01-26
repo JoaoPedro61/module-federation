@@ -3,10 +3,11 @@ import { Injectable } from '@nestjs/common';
 export interface MicroFrontend {
   name: string;
   pathName: string;
-  urlEntry: string;
+  remoteEntry: string;
   exposedModule: string;
   applicationType: string;
   ngModule: string;
+  elementName?: string;
 }
 
 export type MicroFrontends = MicroFrontend[];
@@ -16,7 +17,7 @@ export const DATA: { [x: string]: MicroFrontends } = {
     {
       name: 'auth',
       pathName: 'auth',
-      urlEntry: 'http://localhost:4001/remoteEntry.js',
+      remoteEntry: 'http://localhost:4001/remoteEntry.js',
       exposedModule: './Module',
       ngModule: 'AuthModule',
       applicationType: 'angular',
@@ -24,7 +25,7 @@ export const DATA: { [x: string]: MicroFrontends } = {
     {
       name: 'portalSeguros',
       pathName: 'portalSeguros',
-      urlEntry: 'http://localhost:4002/remoteEntry.js',
+      remoteEntry: 'http://localhost:4002/remoteEntry.js',
       exposedModule: './Module',
       ngModule: 'SchematicRenderModule',
       applicationType: 'angular',

@@ -6,7 +6,7 @@ import { AppService } from './app.service';
   selector: 'ng-root',
   template: `
     <h1>Shell Application</h1>
-    <p *ngFor="let micro of appService.microfrontends">
+    <p *ngFor="let micro of appService.microFrontendList">
       <a routerLink="/{{micro.pathName}}">Go To {{micro.name}}</a>
     </p>
 

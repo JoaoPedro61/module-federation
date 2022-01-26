@@ -1,17 +1,19 @@
 import { RouterModule } from '@angular/router';
 import { ApplicationRef, APP_INITIALIZER, DoBootstrap, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import ROUTES from './app.routes';
-import { HttpClientModule } from '@angular/common/http';
 import { AppService, initializeApp } from './app.service';
+import { DefaultWrapperComponent } from './wrappers/default-wrapper/default-wrapper.component';
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DefaultWrapperComponent
   ],
   imports: [
     BrowserModule,
@@ -24,10 +26,14 @@ import { AppService, initializeApp } from './app.service';
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
       multi: true,
-      deps: [AppService],
+      deps: [
+        AppService,
+      ],
     },
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [
+    AppComponent,
+  ],
 })
 export class AppModule implements DoBootstrap {
 
