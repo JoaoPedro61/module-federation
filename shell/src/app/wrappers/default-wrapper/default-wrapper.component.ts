@@ -25,6 +25,14 @@ export class DefaultWrapperComponent implements OnInit, AfterContentInit {
     const importName = this.route.snapshot.data['importName'];
 
     const importFn = this.service.getLoader(importName);
+
+    console.groupCollapsed(`Rendering MicroFrontend - ${elementName}`);
+    console.log('this.route.snapshot.data => ', this.route.snapshot.data);
+    console.log('elementName => ', elementName);
+    console.log('importName => ', importName);
+    console.log('importFn => ', importFn);
+    console.groupEnd();
+
     if (importFn) {
       importFn()
         .then(_ => console.debug(`element ${elementName} loaded!`))

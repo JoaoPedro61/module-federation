@@ -32,24 +32,16 @@ module.exports = {
       name: "auth",
       filename: "remoteEntry.js",
       exposes: {
-        './Module': './src/app/auth/auth.module.ts',
+        './AppModule': './src/app/app.module.ts',
+        './web-components': './src/bootstrap.ts',
       },
-
-      // For hosts (please adjust)
-      // remotes: {
-      //     "mfe1": "http://localhost:3000/remoteEntry.js",
-
-      // },
-
       shared: share({
-        "@angular/core": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        "@angular/common": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        "@angular/common/http": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-        "@angular/router": { singleton: true, strictVersion: true, requiredVersion: 'auto' },
-
+        "@angular/core": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/common": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/common/http": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/router": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
         ...sharedMappings.getDescriptors()
       })
-
     }),
     sharedMappings.getPlugin()
   ],

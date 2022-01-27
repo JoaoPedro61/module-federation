@@ -11,11 +11,11 @@ import { DefaultWrapperComponent } from './wrappers/default-wrapper';
 
 export interface MicroFrontend {
   name: string;
-  pathName: string;
+  pathName?: string;
   remoteEntry: string;
   exposedModule: string;
   applicationType: string;
-  ngModule: string;
+  ngModule?: string;
   elementName?: string;
 }
 
@@ -52,18 +52,25 @@ export class AppService {
             this.microFrontendList = response;
             const ROUTE_CONFIG = this.router.config;
             const NEW_ROUTES: Routes = response.map((micro) => {
-              this.microFrontendLoader[micro.name] = () => loadRemoteModule({
-                type: 'module',
-                remoteEntry: micro.remoteEntry,
-                exposedModule: micro.exposedModule,
-              });
+              console.groupCollapsed(`MicroFrontend - ${micro.name}`);
+              console.log(micro);
+              console.groupEnd();
+
+              const forRootConfig = {
+                ...micro,
+                envelopedByShell: true,
+              };
+
+              if (micro.exposedModule === './web-components') {
+                this.microFrontendLoader[micro.name] = () => loadRemoteModule({
+                  type: micro.applicationType === 'react' ? 'script' : 'module',
+                  ...(micro.applicationType === 'react' ? { remoteName: micro.name } :  {}),
+                  remoteEntry: micro.remoteEntry,
+                  exposedModule: micro.exposedModule,
+                });
+              }
 
               // const loader = this.microFrontendLoader[micro.name];
-
-              // const forRootConfig = {
-              //   ...micro,
-              //   envelopedByShell: true,
-              // };
 
               /* return {
                 path: micro.pathName,
@@ -76,9 +83,24 @@ export class AppService {
                 })
               }; */
 
+              if (!micro.pathName) {
+                return (void 0 as any);
+              } else if (micro.ngModule === 'AppModule' || micro.ngModule === './AppModule') {
+                loadRemoteModule({
+                  type: 'module',
+                  remoteEntry: micro.remoteEntry,
+                  exposedModule: micro.exposedModule,
+                }).then(m => {
+                  const ngModuleName = (micro.ngModule || micro.exposedModule);
+
+                  return typeof m[ngModuleName].forRoot === 'function'
+                    ? m[ngModuleName].forRoot(forRootConfig)
+                    : m[ngModuleName]
+                });
+              }
 
               return {
-                matcher: startsWith(micro.pathName),
+                matcher: startsWith(micro.pathName || ''),
                 component: DefaultWrapperComponent,
                 data: {
                   importName: micro.name,

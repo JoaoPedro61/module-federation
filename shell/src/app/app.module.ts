@@ -1,5 +1,5 @@
 import { RouterModule } from '@angular/router';
-import { ApplicationRef, APP_INITIALIZER, DoBootstrap, NgModule } from '@angular/core';
+import { ApplicationRef, APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, DoBootstrap, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -34,6 +34,9 @@ import { DefaultWrapperComponent } from './wrappers/default-wrapper/default-wrap
   bootstrap: [
     AppComponent,
   ],
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ]
 })
 export class AppModule implements DoBootstrap {
 

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
  * @class AppComponent
  */
 @Component({
-  selector: 'ng-root',
+  selector: 'auth-element',
   template: '<router-outlet></router-outlet>',
 })
 export class AppComponent { }
