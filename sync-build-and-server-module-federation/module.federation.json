@@ -1,0 +1,9 @@
+{
+  "applications": [
+    {
+      "name": "test",
+      "exposedModule": "./Module",
+      "remoteEntry": "http://localhost:3001/removeEntry.js"
+    }
+  ]
+}

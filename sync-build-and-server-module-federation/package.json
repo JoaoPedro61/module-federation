@@ -1,0 +1,21 @@
+{
+  "name": "sync-build-and-server-module-federation",
+  "version": "1.0.0",
+  "description": "A simple sync properties with the server.",
+  "main": "./bin/index.js",
+  "bin": {
+    "sync-build-and-server-module-federation": "./bin/index.js"
+  },
+  "scripts": {
+    "test": "node ./bin/index.js --skip-server-requests",
+    "real:test": "node ./bin/index.js --server-url http://localhost:3010/"
+  },
+  "author": "João Pedro <mjoaopedro61@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "arg": "^5.0.1",
+    "axios": "^0.25.0",
+    "chokidar": "^3.5.3",
+    "yup": "^0.32.11"
+  }
+}
