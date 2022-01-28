@@ -7,7 +7,7 @@ import { AppService } from './app.service';
   template: `
     <h1>Shell Application</h1>
     <p *ngFor="let micro of appService.microFrontendList">
-      <a routerLink="/{{micro.pathName}}">Go To {{micro.name}}</a>
+      <a routerLink="/{{$any(micro).pathName}}">Go To {{$any(micro).exposedNgModule}}#{{$any(micro).name}}</a>
     </p>
 
     <router-outlet></router-outlet>

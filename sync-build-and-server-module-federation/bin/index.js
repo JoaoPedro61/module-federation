@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const arg = require('arg');
 
-const watchAndSyncFile = require('./../src');
+const { watchAndSyncFile } = require('./../src');
 
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(

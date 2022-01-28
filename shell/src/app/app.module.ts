@@ -6,14 +6,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import ROUTES from './app.routes';
 import { AppService, initializeApp } from './app.service';
-import { DefaultWrapperComponent } from './wrappers/default-wrapper/default-wrapper.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    DefaultWrapperComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +42,7 @@ export class AppModule implements DoBootstrap {
     appRef
       .isStable
       .subscribe({
-        next: (isStable) => {
+        next: (isStable: boolean) => {
           console.log(`Application is ${!isStable ? 'un' : ''}stable`)
         },
       });

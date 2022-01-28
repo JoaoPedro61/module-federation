@@ -6,17 +6,11 @@ import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-import { startsWith } from './router.utils';
-import { DefaultWrapperComponent } from './wrappers/default-wrapper';
+declare const require: any;
+const settings = require('../../module.federation.json');
 
 export interface MicroFrontend {
-  name: string;
-  pathName?: string;
-  remoteEntry: string;
-  exposedModule: string;
-  applicationType: string;
-  ngModule?: string;
-  elementName?: string;
+  [x: string]: any;
 }
 
 export type MicroFrontendLoaderCallback = () => Promise<any>;
@@ -32,7 +26,7 @@ export type MicroFrontendList = MicroFrontend[];
 })
 export class AppService {
 
-  public microFrontendList!: MicroFrontendList;
+  public microFrontendList: MicroFrontendList = [];
 
   private microFrontendLoader: MicroFrontendLoader = {};
 
@@ -48,66 +42,38 @@ export class AppService {
       this.loadConfig()
         .pipe(take(1))
         .subscribe({
-          next: (response) => {
-            this.microFrontendList = response;
+          next: (response: any[]) => {
+            this.microFrontendList = [];
             const ROUTE_CONFIG = this.router.config;
-            const NEW_ROUTES: Routes = response.map((micro) => {
-              console.groupCollapsed(`MicroFrontend - ${micro.name}`);
-              console.log(micro);
-              console.groupEnd();
+            let NEW_ROUTES: Routes = [];
+            response.forEach((micro: any) => {
+              (micro.applications || []).forEach((item: any) => {
+                const forRootConfig = {
+                  ...micro,
+                  envelopedByShell: true,
+                };
 
-              const forRootConfig = {
-                ...micro,
-                envelopedByShell: true,
-              };
+                this.microFrontendList.push(item);
 
-              if (micro.exposedModule === './web-components') {
-                this.microFrontendLoader[micro.name] = () => loadRemoteModule({
-                  type: micro.applicationType === 'react' ? 'script' : 'module',
-                  ...(micro.applicationType === 'react' ? { remoteName: micro.name } :  {}),
-                  remoteEntry: micro.remoteEntry,
-                  exposedModule: micro.exposedModule,
+                NEW_ROUTES.push({
+                  path: item.pathName,
+                  loadChildren: () => loadRemoteModule({
+                    type: 'module',
+                    remoteEntry: micro.remoteUrl,
+                    exposedModule: item.exposedModule,
+                  }).then((m: any) => {
+                    const exposedNgModuleName = (item.exposedNgModule || item.exposedModule);
+                    const applyConfigNameFn = 'forRoot';
+
+                    return (m[exposedNgModuleName][applyConfigNameFn]) && (typeof m[exposedNgModuleName][applyConfigNameFn] === 'function')
+                      ? m[exposedNgModuleName].forRoot(forRootConfig)
+                      : m[exposedNgModuleName]
+                  })
                 });
-              }
+              })
+            });
+            NEW_ROUTES = NEW_ROUTES.filter(v => !!v);
 
-              // const loader = this.microFrontendLoader[micro.name];
-
-              /* return {
-                path: micro.pathName,
-                loadChildren: () => loader().then(m => {
-                  const ngModuleName = (micro.ngModule || micro.exposedModule);
-
-                  return typeof m[ngModuleName].forRoot === 'function'
-                    ? m[ngModuleName].forRoot(forRootConfig)
-                    : m[ngModuleName]
-                })
-              }; */
-
-              if (!micro.pathName) {
-                return (void 0 as any);
-              } else if (micro.ngModule === 'AppModule' || micro.ngModule === './AppModule') {
-                loadRemoteModule({
-                  type: 'module',
-                  remoteEntry: micro.remoteEntry,
-                  exposedModule: micro.exposedModule,
-                }).then(m => {
-                  const ngModuleName = (micro.ngModule || micro.exposedModule);
-
-                  return typeof m[ngModuleName].forRoot === 'function'
-                    ? m[ngModuleName].forRoot(forRootConfig)
-                    : m[ngModuleName]
-                });
-              }
-
-              return {
-                matcher: startsWith(micro.pathName || ''),
-                component: DefaultWrapperComponent,
-                data: {
-                  importName: micro.name,
-                  elementName: micro.elementName
-                },
-              };
-            }).filter(v => !!v);
             if (ROUTE_CONFIG[0] && ROUTE_CONFIG[0].path === '') {
               if (!ROUTE_CONFIG[0].children) {
                 ROUTE_CONFIG[0].children = [];
@@ -126,9 +92,13 @@ export class AppService {
     });
   }
 
-  public loadConfig(): Observable<MicroFrontendList> {
+  public loadConfig(): Observable<any> {
     return this.http
-      .get<MicroFrontendList>(environment.api.urlMicroFrontend)
+      .get<any>(environment.api.urlMicroFrontend, {
+        params: {
+          remotes: JSON.stringify(settings.remotes || {}),
+        }
+      })
       .pipe(take(1));
   }
 

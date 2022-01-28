@@ -1,20 +1,21 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query } from '@nestjs/common';
 
-import { AppService, MicroFrontends } from './app.service';
+import { Register, GetRemotes } from './app.service.props';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('/register')
+  public async register(@Body() data: Register): Promise<Register> {
+    return await this.appService.register(data);
   }
 
-  @Get('/available/:applicationName')
-  getAvailableMicroFrontends(
-    @Param('applicationName') applicationName: string,
-  ): MicroFrontends {
-    return this.appService.getAvailableMicroFrontends(applicationName);
+  @Get('/get-remotes')
+  getRemotes(@Query('remotes') remotes: GetRemotes): any {
+    return this.appService.getRemotes(
+      typeof remotes === 'string' ? JSON.parse(remotes) : remotes,
+    );
   }
 }

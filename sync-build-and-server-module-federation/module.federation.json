@@ -1,9 +1,28 @@
 {
-  "applications": [
-    {
-      "name": "test",
-      "exposedModule": "./Module",
-      "remoteEntry": "http://localhost:3001/removeEntry.js"
-    }
-  ]
+  "name": "test",
+  "filename": "remoteEntry.js",
+  "remoteEntry": "http://localhost:3001/",
+  "remotes": {
+    "test": [
+      "applications",
+      "components",
+      "common"
+    ]
+  },
+  "exposes": {
+    "applications": [
+      {
+        "exposedModule": "./Module",
+        "exposedFile": "./src/app/app.module.ts",
+        "pathName": "test",
+        "exposedNgModule": "AppModule"
+      }
+    ],
+    "components": [
+      {
+        "exposedModule": "./Button",
+        "exposedFile": "./src/app/button.module.ts"
+      }
+    ]
+  }
 }

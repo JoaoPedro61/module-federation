@@ -1,57 +1,65 @@
+import fs = require('fs');
+import path = require('path');
 import { Injectable } from '@nestjs/common';
+import { Register, GetRemotes } from './app.service.props';
 
-export interface MicroFrontend {
-  name: string;
-  pathName?: string;
-  remoteEntry: string;
-  exposedModule: string;
-  applicationType: string;
-  ngModule?: string;
-  elementName?: string;
+const ROOT_PATH_DATA = path.resolve(__dirname, '../');
+const DATA_FILENAME = 'data.json';
+const PATH_DATA = path.resolve(`${ROOT_PATH_DATA}/${DATA_FILENAME}`);
+const EXISTS_FILE = fs.existsSync(PATH_DATA);
+
+if (!EXISTS_FILE) {
+  fs.writeFileSync(PATH_DATA, '{}', {
+    encoding: 'utf-8',
+  });
 }
-
-export type MicroFrontends = MicroFrontend[];
-
-export const DATA: { [x: string]: MicroFrontends } = {
-  shell: [
-    {
-      name: 'auth',
-      pathName: 'auth',
-      remoteEntry: 'http://localhost:4001/remoteEntry.js',
-      exposedModule: './web-components',
-      ngModule: 'AuthModule',
-      applicationType: 'angular',
-      elementName: 'auth-element',
-    },
-    {
-      name: 'basic_dashboard',
-      pathName: 'dashboard',
-      remoteEntry: 'http://localhost:3003/remoteEntry.js',
-      exposedModule: './web-components',
-      applicationType: 'react',
-      elementName: 'basic-dashboard',
-    },
-    /*
-    {
-      name: 'portalSeguros',
-      pathName: 'portalSeguros',
-      remoteEntry: 'http://localhost:4002/remoteEntry.js',
-      exposedModule: './Module',
-      ngModule: 'SchematicRenderModule',
-      applicationType: 'angular',
-    },
-    */
-  ],
-  auth: [],
-};
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  public async register(register: Register): Promise<Register> {
+    const fileDataStr = fs.readFileSync(PATH_DATA, {
+      encoding: 'utf-8',
+    });
+    let fileData = JSON.parse(fileDataStr);
+
+    fileData = {
+      ...fileData,
+      ...register,
+    };
+
+    fs.writeFileSync(PATH_DATA, JSON.stringify(fileData, void 0, 2));
+    return register;
   }
 
-  public getAvailableMicroFrontends(applicationName = 'shell'): MicroFrontends {
-    return DATA[applicationName] || [];
+  public getRemotes(remotes: GetRemotes): any {
+    const fileDataStr = fs.readFileSync(PATH_DATA, {
+      encoding: 'utf-8',
+    });
+    const fileData = JSON.parse(fileDataStr);
+
+    const data = Object.keys(remotes)
+      .reduce((arr, value) => {
+        const dependencies = remotes[value];
+        console.log(dependencies);
+        if (fileData[value]) {
+          const savedObject = fileData[value];
+
+          if (!dependencies.includes('applications')) {
+            delete savedObject['applications'];
+          }
+          if (!dependencies.includes('components')) {
+            delete savedObject['components'];
+          }
+          if (!dependencies.includes('common')) {
+            delete savedObject['common'];
+          }
+
+          arr.push(savedObject);
+        }
+        return arr;
+      }, [])
+      .filter((v: any) => !!v);
+
+    return data;
   }
 }

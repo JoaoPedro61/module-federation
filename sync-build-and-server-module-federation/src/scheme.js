@@ -1,26 +1,48 @@
 const yup = require('yup');
-
+const mapValues = require('lodash.mapvalues');
 
 const scheme = yup
   .object({
-    applications: yup.array(
-      yup
-        .object({
-          // required props
-          name: yup.string().required(`Application "name" is a required prop!`),
-          remoteEntry: yup.string().required(`Application "remoteEntry" is a required prop!`),
-          exposedModule: yup.string().required(`Application "exposedModule" is a required prop!`),
+    name: yup.string().required(`Application "name" is a required prop!`),
+    filename: yup.string().required(`Application "name" is a required prop!`),
+    remoteEntry: yup.string().required(`Application "remoteEntry" is a required prop!`),
 
-          // optional props
-          require: yup.array(yup.string()),
-          pathName: yup.string(),
-          ngModule: yup.string(),
-        }),
+    remotes: yup.lazy(obj =>
+      yup.object(
+        mapValues(obj, (_, key) => {
+          return yup.array(yup.string().required(`"${key}" remote "name" is a required prop!`));
+        })
+      )
     ),
 
-    /* To add later */
-    /* components */
-    /* common */
+    exposes: yup.object({
+      applications: yup.array(
+        yup
+          .object({
+            // required props
+            exposedModule: yup.string().required(`Application exposes "exposedModule" is a required prop!`),
+            exposedFile: yup.string().required(`Application exposes "exposedFile" is a required prop!`),
+            pathName: yup.string(),
+            exposedNgModule: yup.string(),
+          }),
+      ),
+      components: yup.array(
+        yup
+          .object({
+            // required props
+            exposedModule: yup.string().required(`Component exposes "exposedModule" is a required prop!`),
+            exposedFile: yup.string().required(`Component exposes "exposedFile" is a required prop!`),
+          }),
+      ),
+      common: yup.array(
+        yup
+          .object({
+            // required props
+            exposedModule: yup.string().required(`Common exposes "exposedModule" is a required prop!`),
+            exposedFile: yup.string().required(`Common exposes "exposedFile" is a required prop!`),
+          }),
+      ),
+    })
   });
 
 module.exports = scheme;

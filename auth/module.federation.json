@@ -1,0 +1,17 @@
+{
+  "name": "auth",
+  "filename": "remoteEntry.js",
+  "remoteEntry": "http://localhost:4001/",
+  "remotes": {},
+  "exposes": {
+    "applications": [
+      {
+        "exposedModule": "./Module",
+        "exposedFile": "./src/app/auth/auth.module.ts",
+        "pathName": "auth",
+        "exposedNgModule": "AuthModule"
+      }
+    ],
+    "components": []
+  }
+}

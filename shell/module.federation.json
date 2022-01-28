@@ -1,0 +1,11 @@
+{
+  "name": "shell",
+  "filename": "remoteEntry.js",
+  "remoteEntry": "http://localhost:4200/",
+  "remotes": {
+    "auth": [
+      "applications"
+    ]
+  },
+  "exposes": {}
+}

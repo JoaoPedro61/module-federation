@@ -4,10 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:all": "concurrently --kill-others \"npm run start\" \"npm run sync:module:federation:server\"",
+    "sync:module:federation:server": "sync-build-and-server-module-federation --file module.federation.json --server-url http://localhost:3010 --watch",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "watch:all": "concurrently --kill-others \"npm run watch\" \"npm run sync:module:federation:server\"",
     "test": "ng test",
-    "run:all": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js"
+    "run:all:mf": "node node_modules/@angular-architects/module-federation/src/server/mf-dev-server.js",
+    "run:all": "concurrently --kill-others \"npm run run:all:mf\" \"npm run sync:module:federation:server\""
   },
   "private": true,
   "dependencies": {
@@ -27,12 +31,16 @@
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
+  "resolutions": {
+    "webpack": "^5.0.0"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.1.4",
     "@angular/cli": "~13.1.4",
     "@angular/compiler-cli": "~13.1.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
+    "concurrently": "^7.0.0",
     "jasmine-core": "~3.10.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
@@ -40,6 +48,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "ngx-build-plus": "^13.0.1",
+    "sync-build-and-server-module-federation": "..\\sync-build-and-server-module-federation\\sync-build-and-server-module-federation-v1.0.0.tgz",
     "typescript": "~4.5.2"
   }
 }

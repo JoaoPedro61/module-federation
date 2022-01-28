@@ -6,7 +6,7 @@ export const environment = {
   production: false,
 
   api: {
-    urlMicroFrontend: 'http://localhost:3010/available/shell',
+    urlMicroFrontend: 'http://localhost:3010/get-remotes',
   }
 };
 

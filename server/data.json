@@ -1,0 +1,29 @@
+{
+  "auth": {
+    "name": "auth",
+    "filename": "remoteEntry.js",
+    "remoteEntry": "http://localhost:4001/",
+    "remoteUrl": "http://localhost:4001/remoteEntry.js",
+    "applications": [
+      {
+        "exposedModule": "./Module",
+        "exposedFile": "./src/app/auth/auth.module.ts",
+        "pathName": "auth",
+        "exposedNgModule": "AuthModule",
+        "name": "auth",
+        "remoteEntry": "http://localhost:4001/remoteEntry.js"
+      }
+    ],
+    "components": [],
+    "common": []
+  },
+  "shell": {
+    "name": "shell",
+    "filename": "remoteEntry.js",
+    "remoteEntry": "http://localhost:4200/",
+    "remoteUrl": "http://localhost:4200/remoteEntry.js",
+    "applications": [],
+    "components": [],
+    "common": []
+  }
+}

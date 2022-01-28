@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A simple sync properties with the server.",
   "main": "./bin/index.js",
+  "files": [
+    "./src",
+    "./bin"
+  ],
   "bin": {
     "sync-build-and-server-module-federation": "./bin/index.js"
   },
@@ -16,6 +20,7 @@
     "arg": "^5.0.1",
     "axios": "^0.25.0",
     "chokidar": "^3.5.3",
+    "lodash.mapvalues": "^4.6.0",
     "yup": "^0.32.11"
   }
 }
