@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TestingCoreEventsService } from 'testing-core-events';
 
 import { AppService } from './app.service';
 
@@ -15,6 +16,13 @@ import { AppService } from './app.service';
 })
 export class AppComponent {
 
-  constructor(public readonly appService: AppService) { }
+  constructor(
+    public readonly appService: AppService,
+    public readonly coreService: TestingCoreEventsService
+  ) {
+    this.coreService.eventStream$.subscribe((event) => {
+      console.log('Event received in shell', event);
+    })
+  }
 
 }

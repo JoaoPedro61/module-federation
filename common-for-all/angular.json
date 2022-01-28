@@ -1,0 +1,74 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "analytics": "3202b25e-fa5b-4003-b57a-8eef3f8dd7be",
+    "packageManager": "yarn"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "core": {
+      "projectType": "library",
+      "root": "projects/core",
+      "sourceRoot": "projects/core/src",
+      "prefix": "gc",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/core/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/core/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/core/src/test.ts",
+            "tsConfig": "projects/core/tsconfig.spec.json",
+            "karmaConfig": "projects/core/karma.conf.js"
+          }
+        }
+      }
+    },
+    "testing-core-events": {
+      "projectType": "library",
+      "root": "projects/testing-core-events",
+      "sourceRoot": "projects/testing-core-events/src",
+      "prefix": "core",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/testing-core-events/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/testing-core-events/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/testing-core-events/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/testing-core-events/src/test.ts",
+            "tsConfig": "projects/testing-core-events/tsconfig.spec.json",
+            "karmaConfig": "projects/testing-core-events/karma.conf.js"
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "core"
+}

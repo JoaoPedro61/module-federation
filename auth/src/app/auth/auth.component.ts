@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TestingCoreEventsService } from 'testing-core-events';
 
 @Component({
   selector: 'ng-auth',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AuthComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly coreService: TestingCoreEventsService) { }
 
   public ngOnInit(): void {
+    this.coreService.emitEvent({
+      event: 'init',
+      data: {
+        phase: 'ready'
+      }
+    });
   }
 
 }

@@ -6408,6 +6408,13 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
+testing-core-events@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/testing-core-events/-/testing-core-events-0.0.1.tgz#87f6e6dbd702ac0efa518c6bcf8599ed0c777384"
+  integrity sha512-F73sqkvnPCjFYEhEtjqQ5eua1xlKWJRdxzMvXZ168hQOhWjgyOt4UEmni8cIzQ7grupq/sup/sqRcjy4+CD2Ug==
+  dependencies:
+    tslib "^2.3.0"
+
 text-table@0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"

@@ -4,7 +4,6 @@ const path = require("path");
 const { spawnSync } = require('child_process');
 const share = mf.share;
 
-
 const { stdout: pluginConfigStr, error } = spawnSync(process.argv0, [
   path.resolve(__dirname, 'async.webpack.config.js')
 ]);
@@ -16,7 +15,9 @@ if (!error) {
 }
 
 const sharedMappings = new mf.SharedMappings();
-sharedMappings.register(path.join(__dirname, 'tsconfig.json'), [/* mapped paths to share */]);
+sharedMappings.register(path.join(__dirname, 'tsconfig.json'), [
+  /* mapped paths to share */
+]);
 
 const config = {
   output: {
@@ -39,10 +40,12 @@ const config = {
       ...pluginConfig,
 
       shared: share({
-        "@angular/core": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
-        "@angular/common": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
-        "@angular/common/http": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
-        "@angular/router": { singleton: false, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/core": { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/common": { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/common/http": { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+        "@angular/router": { singleton: true, strictVersion: false, requiredVersion: 'auto' },
+
+        'testing-core-events': { singleton: true, strictVersion: false, requiredVersion: 'auto' },
         ...sharedMappings.getDescriptors()
       })
     }),

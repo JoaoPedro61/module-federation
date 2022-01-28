@@ -1,7 +1,9 @@
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { AuthRoutingModule } from './auth-routing.module';
+import { TestingCoreEventsModule } from 'testing-core-events';
+
 import { AuthComponent } from './auth.component';
 
 
@@ -11,7 +13,13 @@ import { AuthComponent } from './auth.component';
   ],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    TestingCoreEventsModule,
+    RouterModule.forChild([
+      {
+        path: '',
+        component: AuthComponent,
+      }
+    ])
   ]
 })
 export class AuthModule { }

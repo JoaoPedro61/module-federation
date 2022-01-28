@@ -28,6 +28,7 @@
     "@angular/router": "~13.1.0",
     "document-register-element": "^1.14.10",
     "rxjs": "~7.4.0",
+    "testing-core-events": "^0.0.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
