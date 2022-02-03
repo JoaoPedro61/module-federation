@@ -25,5 +25,23 @@
     "applications": [],
     "components": [],
     "common": []
+  },
+  "ater": {
+    "name": "ater",
+    "filename": "remoteEntry.js",
+    "remoteEntry": "http://localhost:4002/",
+    "remoteUrl": "http://localhost:4002/remoteEntry.js",
+    "applications": [
+      {
+        "exposedModule": "./Module",
+        "exposedFile": "./src/app/wrapper.app.module.ts",
+        "pathName": "ater",
+        "exposedNgModule": "WrapperAppModule",
+        "name": "ater",
+        "remoteEntry": "http://localhost:4002/remoteEntry.js"
+      }
+    ],
+    "components": [],
+    "common": []
   }
 }

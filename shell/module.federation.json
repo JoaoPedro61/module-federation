@@ -5,6 +5,9 @@
   "remotes": {
     "auth": [
       "applications"
+    ],
+    "ater": [
+      "applications"
     ]
   },
   "exposes": {}
